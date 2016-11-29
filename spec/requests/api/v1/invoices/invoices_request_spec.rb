@@ -64,7 +64,7 @@ RSpec.describe "invoices endpoints" do
       20.times do
         get "/api/v1/invoices/random"
 
-        invoices_statuses = invoices.map {|invoice| invoice.status}
+        invoice_statuses = invoices.map {|invoice| invoice.status}
         data = JSON.parse(response.body)
 
         expect(response).to be_success
