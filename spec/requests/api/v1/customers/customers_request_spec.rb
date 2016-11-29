@@ -58,4 +58,22 @@ RSpec.describe "customers endpoints" do
       end
     end
   end
+
+  context "GET /api/v1/customer/random" do
+    it "finds a random customer" do
+      customers = create_list(:customer, 5)
+
+      20.times do
+        get "/api/v1/customers/random"
+
+        customer_ids = customers.map { |customer| customer.id }
+        data = JSON.parse(response.body)
+
+        expect(response).to be_success
+
+        expect(customer_ids).to include(data["id"])
+      end
+    end
+  end
+
 end
