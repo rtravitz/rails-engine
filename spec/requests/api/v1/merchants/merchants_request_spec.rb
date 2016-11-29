@@ -59,4 +59,21 @@ RSpec.describe "merchants endpoints" do
     end
   end
 
+  context "GET /api/v1/merchants/find_all?" do
+    it "finds all merchants" do
+      merchants = create_list(:merchant, 5)
+      
+      50.times do
+        get "/api/v1/merchants/random"
+
+        merchant_names = merchants.map { |merchant| merchant.name }
+        data = JSON.parse(response.body)
+
+        expect(response).to be_success
+
+        expect(merchant_names).to include(data["name"])
+      end
+    end
+  end
+
 end
