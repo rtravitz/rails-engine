@@ -76,4 +76,18 @@ RSpec.describe "merchants endpoints" do
     end
   end
 
+  context "GET /api/v1/merchants/find?" do
+    it "finds a merchant by criteria" do
+      create_list(:merchant, 3)
+      merchant = Merchant.first
+
+      get "/api/v1/merchants/find?id=#{merchant.id}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["id"]).to eq(merchant.id)
+    end
+  end
+
 end
