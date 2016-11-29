@@ -53,6 +53,9 @@ namespace :load_data do
       Transaction.create(row.to_hash)
     end
   end
+
+  task :all => ["load_data:customers","load_data:invoice_items","load_data:invoices",
+  "load_data:items", "load_data:merchants", "load_data:transactions"]
   
 end
 
