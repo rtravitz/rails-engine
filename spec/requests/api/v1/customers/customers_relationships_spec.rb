@@ -14,4 +14,18 @@ RSpec.describe "customers relationships endpoints" do
       expect(data.count).to eq(3)
     end
   end
+
+  context "GET /api/v1/customers/:id/transactions" do
+    it "returns a list of all transactions for one customer" do
+      customer = create(:customer)
+      create_list(:transaction, 3, customer_id: customer.id)
+
+      get "/api/v1/customers/#{customer.id}/transactions"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data.count).to eq(3)
+    end
+  end
 end
