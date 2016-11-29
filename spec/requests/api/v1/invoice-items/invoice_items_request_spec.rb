@@ -13,4 +13,17 @@ RSpec.describe "invoice items endpoints" do
       expect(invoice_items.count).to eq(3)
     end
   end
+
+  context "GET /api/v1/invoices/:id" do
+    it "returns a single invoice item" do
+      invoice_item = create(:invoice_item)
+
+      get "/api/v1/invoice_items/:id"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["quantity"]).to eq(invoice_item.quantity)
+    end
+  end
 end
