@@ -60,4 +60,19 @@ RSpec.describe "invoice endpoints" do
       expect(data.count).to eq(3)
     end
   end
+
+  context "GET /api/v1/invoices/id/merchants" do
+    it "returns a list of all merchants for one invoice" do
+      invoice = create(:invoice)
+      merchants = create_list(:merchant, 3)
+      merchants.each {|m| invoice.merchant = m}
+
+      get "/api/v1/invoices/#{invoice.id}/merchants"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data.count).to eq(3)
+    end
+  end
 end
