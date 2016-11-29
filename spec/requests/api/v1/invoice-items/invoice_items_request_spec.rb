@@ -10,7 +10,7 @@ RSpec.describe "invoice items endpoints" do
       invoice_items = JSON.parse(response.body)
 
       expect(response).to be_success
-      expect(invoices.count).to eq(3)
+      expect(invoice_items.count).to eq(3)
     end
   end
 end
