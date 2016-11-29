@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe "merchant" do
+describe "customer" do
   context "validations" do
     it "is invalid without a first_name" do
       customer = Customer.new(last_name: "Test")
