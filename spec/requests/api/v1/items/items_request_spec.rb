@@ -13,4 +13,17 @@ RSpec.describe "items endpoints" do
       expect(items.count).to eq(3)
     end
   end
+
+  context "GET /api/v1/items/:id" do
+    it "returns a single item" do
+      item = create(:item)
+
+      get "/api/v1/items/#{item.id}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["name"]).to eq(item.name)
+    end
+  end
 end
