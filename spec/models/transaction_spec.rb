@@ -20,7 +20,7 @@ describe "transaction" do
       expect(transaction).to be_invalid
     end
 
-    it "is invalid without a invoice" do
+    it "is invalid without an invoice" do
       transaction = Transaction.new(credit_card_number: 11111111, result: "success")
 
       expect(transaction).to be_invalid
@@ -36,7 +36,7 @@ describe "transaction" do
     end
   end
 
-  describe "relationship" do
+  describe "relationships" do
     it "belongs to a invoice" do
       transaction = Transaction.new(credit_card_number: 11111111, result: "success")
 
