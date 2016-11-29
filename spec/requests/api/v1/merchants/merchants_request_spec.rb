@@ -24,7 +24,6 @@ RSpec.describe "merchants endpoints" do
 
       expect(response).to be_success
       expect(merchants["name"]).to eq(merchant.name)
-
     end
   end
 
