@@ -18,7 +18,7 @@ RSpec.describe "invoice items endpoints" do
     it "returns a single invoice item" do
       invoice_item = create(:invoice_item)
 
-      get "/api/v1/invoice_items/:id"
+      get "/api/v1/invoice_items/#{invoice_item.id}"
 
       data = JSON.parse(response.body)
 
