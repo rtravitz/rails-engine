@@ -57,4 +57,19 @@ RSpec.describe "invoice items endpoints" do
       end
     end
   end
+
+  context "GET /api/v1/invoice_items/random" do
+    it "returns a random invoice item" do
+      invoice_items = create_list(:invoice_item, 5)
+      20.times do
+        get "/api/v1/invoice_items/random"
+
+        invoice_item_quantities = invoice_items.map {|item| item.quantity}
+        data = JSON.parse(response.body)
+
+        expect(response).to be_success
+        expect(invoice_item_quantities).to include(data["quantity"])
+      end
+    end
+  end
 end
