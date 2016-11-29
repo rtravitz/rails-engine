@@ -45,4 +45,19 @@ RSpec.describe "invoice endpoints" do
       expect(data.count).to eq(2)
     end
   end
+
+  context "GET /api/v1/invoices/id/customers" do
+    it "returns a list of all customers for one invoice" do
+      invoice = create(:invoice)
+      customers = create_list(:customer, 3)
+      customers.each {|c| invoice.customer = c}
+
+      get "/api/v1/invoices/#{invoice.id}/customers"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data.count).to eq(3)
+    end
+  end
 end
