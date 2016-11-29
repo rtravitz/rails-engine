@@ -26,4 +26,18 @@ RSpec.describe "invoice items endpoints" do
       expect(data["quantity"]).to eq(invoice_item.quantity)
     end
   end
+
+  context "GET /api/v1/invoice_items/find" do
+    it "returns an invoice item by passed in criteria" do
+      create_list(:invoice_item, 3)
+      invoice_item = InvoiceItem.first
+
+      get "/api/v1/invoice_items/find?quantity=#{invoice_item.quantity}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["quantity"]).to eq(invoice_item.quantity)
+    end
+  end
 end
