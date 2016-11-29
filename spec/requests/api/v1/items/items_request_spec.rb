@@ -39,6 +39,18 @@ RSpec.describe "items endpoints" do
       expect(response).to be_success
       expect(data["name"]).to eq(item.name)
     end
+
+    it "returns an item by passed in criteria disregarding caes" do
+      create_list(:item, 3)
+      item = Item.first
+
+      get "/api/v1/items/find?name=#{item.name.upcase}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["name"]).to eq(item.name)
+    end
   end
 
   context "GET /api/v1/items/find_all" do
@@ -47,6 +59,21 @@ RSpec.describe "items endpoints" do
       item2.update(name: item1.name)
 
       get "/api/v1/items/find_all?name=#{item1.name}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data.count).to eq(2)
+      data.each do |datum|
+        expect(datum["name"]).to eq(item1.name)
+      end
+    end
+
+    it "returns all items by criteria disregarding case" do
+      item1, item2, item3 = create_list(:item, 3)
+      item2.update(name: item1.name)
+
+      get "/api/v1/items/find_all?name=#{item1.name.upcase}"
 
       data = JSON.parse(response.body)
 
