@@ -59,7 +59,7 @@ RSpec.describe "merchants endpoints" do
     end
   end
 
-  context "GET /api/v1/merchants/find_all?" do
+  context "GET /api/v1/merchants/random" do
     it "finds random merchant" do
       merchants = create_list(:merchant, 5)
 
