@@ -8,7 +8,7 @@ RSpec.describe "merchants endpoints" do
       get "/api/v1/merchants"
 
       merchants = JSON.parse(response.body)
-
+ 
       expect(response).to be_success
       expect(merchants.count).to eq(3)
     end
