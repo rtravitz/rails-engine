@@ -26,4 +26,18 @@ RSpec.describe "items endpoints" do
       expect(data["name"]).to eq(item.name)
     end
   end
+
+  context "GET /api/v1/items/find" do
+    it "returns an item by passed in criteria" do
+      create_list(:item, 3)
+      item = Item.first
+
+      get "/api/v1/items/find?name=#{item.name}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["name"]).to eq(item.name)
+    end
+  end
 end
