@@ -57,4 +57,19 @@ RSpec.describe "items endpoints" do
       end
     end
   end
+
+  context "GET /api/v1/items/random" do
+    it "returns a random item" do
+      items = create_list(:item, 5)
+      20.times do
+        get "/api/v1/items/random"
+
+        item_names = items.map {|item| item.name}
+        data = JSON.parse(response.body)
+
+        expect(response).to be_success
+        expect(item_names).to include(data["name"])
+      end
+    end
+  end
 end
