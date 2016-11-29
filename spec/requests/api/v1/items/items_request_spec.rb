@@ -40,4 +40,21 @@ RSpec.describe "items endpoints" do
       expect(data["name"]).to eq(item.name)
     end
   end
+
+  context "GET /api/v1/items/find_all" do
+    it "returns all items by criteria" do
+      item1, item2, item3 = create_list(:item, 3)
+      item2.update(name: item1.name)
+
+      get "/api/v1/items/find_all?name=#{item1.name}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data.count).to eq(2)
+      data.each do |datum|
+        expect(datum["name"]).to eq(item1.name)
+      end
+    end
+  end
 end
