@@ -13,12 +13,12 @@ namespace :load_data do
       Customer.create(row.to_hash)
     end
   end
-  
-  task :invoice_items => :environment do
-    data = File.read("data/invoice_items.csv")
+
+  task :merchants => :environment do
+    data = File.read("data/merchants.csv")
     parsed = CSV.parse(data, headers: true)
     parsed.each do |row|
-      InvoiceItem.create(row.to_hash)
+      Merchant.create(row.to_hash)
     end
   end
   
@@ -38,14 +38,6 @@ namespace :load_data do
     end
   end
   
-  task :merchants => :environment do
-    data = File.read("data/merchants.csv")
-    parsed = CSV.parse(data, headers: true)
-    parsed.each do |row|
-      Merchant.create(row.to_hash)
-    end
-  end
-  
   task :transactions => :environment do
     data = File.read("data/transactions.csv")
     parsed = CSV.parse(data, headers: true)
@@ -54,8 +46,17 @@ namespace :load_data do
     end
   end
 
-  task :all => ["load_data:customers","load_data:invoice_items","load_data:invoices",
-  "load_data:items", "load_data:merchants", "load_data:transactions"]
+  task :invoice_items => :environment do
+    data = File.read("data/invoice_items.csv")
+    parsed = CSV.parse(data, headers: true)
+    parsed.each do |row|
+      InvoiceItem.create(row.to_hash)
+    end
+  end
+  
+
+  task :all => ["load_data:customers","load_data:merchants","load_data:invoices",
+  "load_data:transactions", "load_data:items", "load_data:invoice_items"]
   
 end
 
