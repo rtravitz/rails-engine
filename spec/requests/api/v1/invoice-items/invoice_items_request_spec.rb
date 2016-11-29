@@ -40,4 +40,21 @@ RSpec.describe "invoice items endpoints" do
       expect(data["quantity"]).to eq(invoice_item.quantity)
     end
   end
+
+  context "GET /api/v1/invoice_items/find_all" do
+    it "returns all invoice items by criteria" do
+      item1, item2, item3 = create_list(:invoice_item, 3)
+      item2.update(quantity: item1.quantity)
+
+      get "/api/v1/invoice_items/find_all?quantity=#{item1.quantity}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data.count).to eq(2)
+      data.each do |datum|
+        expect(datum["quantity"]).to eq(item1.quantity)
+      end
+    end
+  end
 end
