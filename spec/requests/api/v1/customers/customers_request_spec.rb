@@ -28,7 +28,7 @@ RSpec.describe "customers endpoints" do
   end
 
   context "GET /api/v1/customers/find?" do
-    it "finds a customer by id" do
+    it "finds a customer by criteria" do
       create_list(:customer, 3)
       customer = Customer.first
 
@@ -42,7 +42,7 @@ RSpec.describe "customers endpoints" do
   end
 
   context "GET /api/v1/customers/find_all?" do
-    it "finds all customers" do
+    it "finds all customers by criteria" do
       customer_1 = Customer.create(first_name: "test_first", last_name: "test_last")
       customer_2 = Customer.create(first_name: "test_first", last_name: "test_last")
 

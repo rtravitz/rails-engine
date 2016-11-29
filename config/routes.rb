@@ -13,6 +13,12 @@ Rails.application.routes.draw do
         get 'random', to: 'random#show'
       end
 
+      namespace :invoices do
+        get 'find', to: 'search#show'
+        get 'find_all', to: 'search#index'
+        get 'random', to: 'random#show'
+      end
+
       namespace :customers do
         get 'find', to: 'search#show'
         get 'find_all', to: 'search#index'
@@ -20,6 +26,12 @@ Rails.application.routes.draw do
       end
 
       namespace :invoices do
+        get 'find', to: 'search#show'
+        get 'find_all', to: 'search#index'
+        get 'random', to: 'random#show'
+      end
+
+      namespace :transactions do
         get 'find', to: 'search#show'
         get 'find_all', to: 'search#index'
         get 'random', to: 'random#show'
