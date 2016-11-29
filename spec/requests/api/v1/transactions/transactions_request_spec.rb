@@ -39,6 +39,18 @@ RSpec.describe "transactions endpoints" do
       expect(response).to be_success
       expect(data["id"]).to eq(transaction.id)
     end
+
+    it "finds a transaction by criteria disregarding case" do
+      create_list(:transaction, 3)
+      transaction = Transaction.first
+
+      get "/api/v1/transactions/find?result=#{transaction.result.upcase}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["result"]).to eq(transaction.result)
+    end
   end
 
   context "GET /api/v1/transactions/find_all?" do
