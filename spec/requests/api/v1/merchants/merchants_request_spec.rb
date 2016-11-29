@@ -15,7 +15,7 @@ RSpec.describe "merchants endpoints" do
   end
 
   context "GET /api/v1/merchants/id" do
-    it "returns a specific item" do
+    it "returns a specific merchant" do
       merchant = create(:merchant)
 
       get "/api/v1/merchants/#{merchant.id}"
