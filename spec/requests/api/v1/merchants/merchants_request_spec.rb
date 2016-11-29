@@ -8,14 +8,14 @@ RSpec.describe "merchants endpoints" do
       get "/api/v1/merchants"
 
       merchants = JSON.parse(response.body)
-
+ 
       expect(response).to be_success
       expect(merchants.count).to eq(3)
     end
   end
 
   context "GET /api/v1/merchants/id" do
-    it "returns a specific item" do
+    it "returns a specific merchant" do
       merchant = create(:merchant)
 
       get "/api/v1/merchants/#{merchant.id}"
