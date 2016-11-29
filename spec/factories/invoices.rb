@@ -1,6 +1,10 @@
 FactoryGirl.define do
+  sequence :status do |n|
+    "status#{n}"
+  end
+
   factory :invoice do
-    status "MyString"
+    status
     customer
     merchant
   end
