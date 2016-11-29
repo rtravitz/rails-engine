@@ -40,4 +40,21 @@ RSpec.describe "invoices endpoints" do
       expect(data["status"]).to eq(invoice.status)
     end
   end 
+
+  context "GET /api/v1/invoices/find_all" do
+    it "returns all invoices by criteria" do
+      invoice1, invoice2, invoice3 = create_list(:invoice, 3)
+      invoice2.update(status: invoice1.status)
+
+      get "/api/v1/invoices/find_all?status=#{invoice1.status}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data.count).to eq(2)
+      data.each do |datum|
+        expect(datum["status"]).to eq(invoice1.status)
+      end
+    end
+  end
 end
