@@ -42,4 +42,12 @@ ActiveRecord::Schema.define(version: 20161129005925) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transactions", force: :cascade do |t|
+    t.integer  "credit_card_number"
+    t.date     "credit_card_expiration_date"
+    t.string   "result"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
+  end
+
 end
