@@ -69,6 +69,22 @@ RSpec.describe "transactions endpoints" do
         expect(datum["credit_card_number"]).to eq(transaction_2.credit_card_number)
       end
     end
+
+    it "finds all transactions by criteria disregarding case" do
+      transaction_1 = create(:transaction, credit_card_number: 999, result: "success")
+      transaction_2 = create(:transaction, credit_card_number: 999, result: "success")
+
+      get "/api/v1/transactions/find_all?result=#{transaction_1.result.upcase}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+
+      data.each do |datum|
+        expect(datum["result"]).to eq(transaction_1.result)
+        expect(datum["result"]).to eq(transaction_2.result)
+      end
+    end
   end
 
   context "GET /api/v1/transactions/random" do
