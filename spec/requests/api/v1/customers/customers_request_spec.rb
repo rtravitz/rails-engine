@@ -39,6 +39,30 @@ RSpec.describe "customers endpoints" do
       expect(response).to be_success
       expect(data["id"]).to eq(customer.id)
     end
+
+    it "finds a customer by first name disregarding case" do
+      create_list(:customer, 3)
+      customer = Customer.first
+
+      get "/api/v1/customers/find?first_name=#{customer.first_name.upcase}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["first_name"]).to eq(customer.first_name)
+    end
+
+    it "finds a customer by last name disregarding case" do
+      create_list(:customer, 3)
+      customer = Customer.first
+
+      get "/api/v1/customers/find?last_name=#{customer.last_name.upcase}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["last_name"]).to eq(customer.last_name)
+    end
   end
 
   context "GET /api/v1/customers/find_all?" do
@@ -55,6 +79,38 @@ RSpec.describe "customers endpoints" do
       data.each do |datum|
         expect(datum["first_name"]).to eq(customer_1.first_name)
         expect(datum["first_name"]).to eq(customer_2.first_name)
+      end
+    end
+
+    it "finds all customers by first_name disregarding case" do
+      customer_1 = Customer.create(first_name: "test_first", last_name: "test_last")
+      customer_2 = Customer.create(first_name: "test_first", last_name: "test_last")
+
+      get "/api/v1/customers/find_all?first_name=#{customer_1.first_name.upcase}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+
+      data.each do |datum|
+        expect(datum["first_name"]).to eq(customer_1.first_name)
+        expect(datum["first_name"]).to eq(customer_2.first_name)
+      end
+    end
+
+    it "finds all customers by last_name disregarding case" do
+      customer_1 = Customer.create(first_name: "test_first", last_name: "test_last")
+      customer_2 = Customer.create(first_name: "test_first", last_name: "test_last")
+
+      get "/api/v1/customers/find_all?last_name=#{customer_1.last_name.upcase}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+
+      data.each do |datum|
+        expect(datum["last_name"]).to eq(customer_1.last_name)
+        expect(datum["last_name"]).to eq(customer_2.last_name)
       end
     end
   end
