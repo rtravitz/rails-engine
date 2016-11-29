@@ -28,7 +28,7 @@ RSpec.describe "merchants endpoints" do
   end
 
   context "GET /api/v1/merchants/find?" do
-    it "finds a merchant by id" do
+    it "finds a merchant by criteria" do
       create_list(:merchant, 3)
       merchant = Merchant.first
 
@@ -42,7 +42,7 @@ RSpec.describe "merchants endpoints" do
   end
 
   context "GET /api/v1/merchants/find_all?" do
-    it "finds all merchants" do
+    it "finds all merchants by criteria" do
       merchant_1 = Merchant.create(name: "test")
       merchant_2 = Merchant.create(name: "test")
 
