@@ -13,16 +13,23 @@ Rails.application.routes.draw do
         get 'random', to: 'random#show'
       end
 
-<<<<<<< HEAD
-      namespace :customers do
-=======
       namespace :invoices do
->>>>>>> 3bf1881567acaf793dafc4195e504131446b4c49
         get 'find', to: 'search#show'
         get 'find_all', to: 'search#index'
         get 'random', to: 'random#show'
       end
-<<<<<<< HEAD
+
+      namespace :customers do
+        get 'find', to: 'search#show'
+        get 'find_all', to: 'search#index'
+        get 'random', to: 'random#show'
+      end
+
+      namespace :invoices do
+        get 'find', to: 'search#show'
+        get 'find_all', to: 'search#index'
+        get 'random', to: 'random#show'
+      end
 
       namespace :transactions do
         get 'find', to: 'search#show'
@@ -30,9 +37,6 @@ Rails.application.routes.draw do
         get 'random', to: 'random#show'
       end
 
-=======
-      
->>>>>>> 3bf1881567acaf793dafc4195e504131446b4c49
       resources :items, only: [:index, :show]
       resources :merchants, only: [:index, :show]
       resources :transactions, only: [:index, :show]
