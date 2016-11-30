@@ -15,4 +15,18 @@ RSpec.describe "items relationships endpoints" do
       expect(data.count).to eq(3)
     end
   end
+
+  context "GET /api/v1/items/id/merchant" do
+    it "returns the merchant one item" do
+      merchant = create(:merchant)
+      item = create(:item, merchant_id: merchant.id)
+
+      get "/api/v1/items/#{item.id}/merchant"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["name"]).to eq(merchant.name)
+    end
+  end
 end
