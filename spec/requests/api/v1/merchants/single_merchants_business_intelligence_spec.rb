@@ -85,4 +85,25 @@ RSpec.describe "single merchants business intelligence endpoints" do
       expect(data["revenue"]).to eq(revenue)
     end
   end
+
+  context "GET /api/v1/merchants/:id/customers_with_pending_invoices" do
+    it "returns a collection of customers which have pending (unpaid) invoices" do
+      merchant1, merchant2 = create_list(:merchant, 2)
+      customer1, customer2 = create_list(:customer, 2)
+      invoice1 = create(:invoice, merchant: merchant1, customer: customer1, status: "pending")
+      invoice2 = create(:invoice, merchant: merchant1, customer: customer1, status: "shipped")
+      invoice3 = create(:invoice, merchant: merchant1, customer: customer2, status: "pending")
+      invoice4 = create(:invoice, merchant: merchant2, customer: customer2, status: "shipped")
+    
+      get "/api/v1/merchants/#{merchant1.id}/customers_with_pending_invoices" 
+
+      data = JSON.parse(response.body)
+      ids = data.map {|datum| datum.id}
+
+      expect(response).to be_success
+      expect(data.count).to eq(2)
+      expect(ids).to include(invoice1.id)
+      expect(ids).to include(invoice3.id)
+    end
+  end
 end
