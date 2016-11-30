@@ -51,6 +51,19 @@ RSpec.describe "items endpoints" do
       expect(response).to be_success
       expect(data["name"]).to eq(item.name)
     end
+
+    it "returns an item by unit price" do
+      create_list(:item, 3)
+      item = Item.first
+      item.update(unit_price: "49121")
+      
+      get '/api/v1/items/find?unit_price=491.21'
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["id"]).to eq(item.id)
+    end
   end
 
   context "GET /api/v1/items/find_all" do

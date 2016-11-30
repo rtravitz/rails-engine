@@ -66,7 +66,6 @@ RSpec.describe "invoice relationship endpoints" do
       invoice = create(:invoice)
       merchants = create_list(:merchant, 3)
       merchants.each {|m| invoice.merchant = m}
-      byebug
 
       get "/api/v1/invoices/#{invoice.id}/merchants"
 
