@@ -16,4 +16,8 @@ class Merchant < ApplicationRecord
   def to_float(input)
      "#{'%.2f' % (input/100.0)}"
   end
+
+  def pending_invoices
+    Customer.joins(:invoices).where("invoices.merchant_id = ? AND invoices.status = ?", self.id, "pending")
+  end
 end
