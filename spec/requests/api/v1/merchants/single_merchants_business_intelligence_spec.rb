@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe "single merchants business intelligence endpoints" do
   context "GET /api/v1/merchants/id/revenue" do
-    it "return total revenue for a merchant across for single invoice item" do
+    it "return total revenue for a merchant for single invoice item" do
       merchant = create(:merchant)
       item = create(:item)
       invoice = create(:invoice, merchant: merchant)
@@ -19,7 +19,7 @@ RSpec.describe "single merchants business intelligence endpoints" do
       expect(data["revenue"]).to eq(revenue)
     end
 
-    it "return total revenue for a merchant across for multiple invoice items" do
+    it "return total revenue for a merchant for multiple invoice items" do
       merchant = create(:merchant)
       item = create(:item)
       invoice = create(:invoice, merchant: merchant)
@@ -85,4 +85,6 @@ RSpec.describe "single merchants business intelligence endpoints" do
       expect(data["revenue"]).to eq(revenue)
     end
   end
+
+  
 end
