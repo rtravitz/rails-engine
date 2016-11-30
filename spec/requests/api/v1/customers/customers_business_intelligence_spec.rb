@@ -23,12 +23,10 @@ RSpec.describe "customers business intelligence endpoints" do
 
       get "/api/v1/customers/#{customer.id}/favorite_merchant"
 
-      data = JSON.parse(data)
+      data = JSON.parse(response.body)
 
       expect(response).to be_success
-      expect(data.count).to eq(1)
       expect(data["id"]).to eq(merchant_1.id)
-
     end
   end
 end
