@@ -6,8 +6,4 @@ class Invoice < ApplicationRecord
   belongs_to :merchant
 
   validates :status, presence: true
-
-  # def self.update_dates
-  #   Invoice.update_all(created_at: :created_at)
-  # end
 end

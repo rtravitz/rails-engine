@@ -10,9 +10,8 @@ class Merchant < ApplicationRecord
   def total_revenue
     {
       "revenue": to_float(invoices
-                          .joins(:transactions)
+                          .joins(:transactions, :invoice_items)
                           .merge(Transaction.successful)
-                          .joins(:invoice_items)
                           .sum("invoice_items.quantity * invoice_items.unit_price"))
     }
   end
@@ -21,11 +20,19 @@ class Merchant < ApplicationRecord
     {
       "revenue": to_float(invoices
                           .where(created_at: date)
-                          .joins(:transactions)
-                          .where("transactions.result = 'success'" )
-                          .joins(:invoice_items)
+                          .joins(:transactions, :invoice_items)
+                          .merge(Transaction.successful)
                           .sum("invoice_items.quantity * invoice_items.unit_price"))
     }
+  end
+
+  def self.most_items_sold(quantity)
+    select("merchants.*, count(invoice_items.quantity) as item_count")
+    .joins(invoices: [:invoice_items, :transactions])
+    .merge(Transaction.successful)
+    .order("item_count DESC")
+    .group("merchants.id")
+    .limit(quantity)
   end
 
   def to_float(input)
