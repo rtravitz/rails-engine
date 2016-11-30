@@ -1,6 +1,8 @@
 class Merchant < ApplicationRecord
   has_many :invoices
   has_many :items
+  has_many :customers, through: :invoices
+  has_many :transactions, through: :invoices
 
   validates :name, presence: true
 
@@ -15,5 +17,12 @@ class Merchant < ApplicationRecord
 
   def to_float(input)
      "#{'%.2f' % (input/100.0)}"
+  end
+
+  def pending_invoices
+    failed = invoices.joins(:transactions).where.not("transactions.result = ?", "success").pluck(:id)
+    success = invoices.joins(:transactions).where.not("transactions.result = ?", "failed").pluck(:id)
+    left = (failed - success).uniq
+    customers.joins(:invoices).where(invoices: {id: left}).distinct
   end
 end
