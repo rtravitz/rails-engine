@@ -25,4 +25,9 @@ class Merchant < ApplicationRecord
     left = (failed - success).uniq
     customers.joins(:invoices).where(invoices: {id: left}).distinct
   end
+
+  def favorite_customer
+        
+  end
+
 end
