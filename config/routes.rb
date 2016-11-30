@@ -8,6 +8,7 @@ Rails.application.routes.draw do
         get ':id/items', to: 'items#index'
         get ':id/invoices', to: 'invoices#index'
         get ':id/revenue', to: 'revenue#show'
+        get ':id/customers_with_pending_invoices', to: 'pending#index'
         get 'most_items', to: 'all_items#index'
       end
 
