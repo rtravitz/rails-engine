@@ -48,31 +48,29 @@ RSpec.describe "invoice relationship endpoints" do
 
   context "GET /api/v1/invoices/id/customers" do
     it "returns a list of all customers for one invoice" do
-      invoice = create(:invoice)
-      customers = create_list(:customer, 3)
-      customers.each {|c| invoice.customer = c}
+      customer = create(:customer)
+      invoice = create(:invoice, customer: customer)
 
-      get "/api/v1/invoices/#{invoice.id}/customers"
+      get "/api/v1/invoices/#{invoice.id}/customer"
 
       data = JSON.parse(response.body)
 
       expect(response).to be_success
-      expect(data.count).to eq(3)
+      expect(data["first_name"]).to eq(customer.first_name)
     end
   end
 
   context "GET /api/v1/invoices/id/merchants" do
     it "returns a list of all merchants for one invoice" do
-      invoice = create(:invoice)
-      merchants = create_list(:merchant, 3)
-      merchants.each {|m| invoice.merchant = m}
+      merchant = create(:merchant)
+      invoice = create(:invoice, merchant: merchant)
 
-      get "/api/v1/invoices/#{invoice.id}/merchants"
+      get "/api/v1/invoices/#{invoice.id}/merchant"
 
       data = JSON.parse(response.body)
 
       expect(response).to be_success
-      expect(data.count).to eq(3)
+      expect(data["name"]).to eq(merchant.name)
     end
   end
 end
