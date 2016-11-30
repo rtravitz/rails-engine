@@ -109,4 +109,26 @@ RSpec.describe "single merchants business intelligence endpoints" do
       expect(ids).to include(customer2.id)
     end
   end
+
+  context "GET/api/v1/merchants/:id/favorite_customer" do
+    it "returns the customer who has conducted the most total number of successful transactions" do
+      merchant1 = create(:merchant)
+      customer1, customer2 = create_list(:customer, 2)
+      invoice1 = create(:invoice, merchant: merchant1, customer: customer1)
+      invoice2 = create(:invoice, merchant: merchant1, customer: customer1)
+      invoice3 = create(:invoice, merchant: merchant1, customer: customer2)
+      invoice4 = create(:invoice, merchant: merchant1, customer: customer2)
+      create_list(:transaction, 2, invoice: invoice1, result: "success")
+      create(:transaction, invoice: invoice2, result: "success")
+      create(:transaction, invoice: invoice3, result: "success")
+      create_list(:transaction, 3, invoice: invoice4, result: "failure")
+
+      get "/api/v1/merchants/#{merchant1.id}/favorite_customer"
+
+      data = JSON.parse(response.body)
+      
+      expect(response).to be_success
+      expect(data["id"]).to eq(customer1.id)
+    end
+  end
 end
