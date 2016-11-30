@@ -45,4 +45,14 @@ class Merchant < ApplicationRecord
     left = (failed - success).uniq
     customers.joins(:invoices).where(invoices: {id: left}).distinct
   end
+
+  def favorite_customer
+    customers.select("customers.*, count(transactions.id) as transactions_count")
+              .joins(invoices: :transactions)
+              .merge(Transaction.successful)
+              .group(:id)
+              .order("transactions_count DESC")
+              .first
+  end
+
 end
