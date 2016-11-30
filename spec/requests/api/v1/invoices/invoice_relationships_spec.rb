@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "invoice endpoints" do
+RSpec.describe "invoice relationship endpoints" do
   context "GET /api/v1/invoices/id/transactions" do
     it "returns a list of all transactions for one invoice" do
       invoice = create(:invoice)
