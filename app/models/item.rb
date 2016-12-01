@@ -14,4 +14,11 @@ class Item < ApplicationRecord
                   .created_at
     }
   end
+
+  def self.most_items_sold(quantity)
+    Item.select("items.*")
+    .joins(:invoice_items)
+    .order("invoice_items.quantity")
+    .limit(quantity)
+  end
 end
