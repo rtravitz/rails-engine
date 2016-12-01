@@ -14,7 +14,7 @@ RSpec.describe "items business intelligence endpoints" do
       data = JSON.parse(response.body)
 
       expect(response).to be_success
-      expect(data["best_day"]).to eq(invoice_3.created_at)
+      expect(data.count).to eq(1)
     end
   end
 end
