@@ -13,26 +13,25 @@ class Item < ApplicationRecord
           .group(:id)
           .order("total_price DESC")
           .limit(quantity)
+  end
 
+  def self.most_items_sold(quantity)
+    joins(:invoices)
+    .merge(Invoice.successful_transaction)
+    .group(:id)
+    .order("sum(invoice_items.quantity) DESC")
+    .first(quantity)
   end
 
   def best_day
     {
-      "best_day": invoices
-                  .joins(:invoice_items)
-                  .order("invoice_items.quantity DESC, invoices.created_at DESC")
-                  .first
-                  .created_at
+      "best_day" =>
+          invoices
+          .joins(:invoice_items)
+          .order("invoice_items.quantity DESC, invoices.created_at DESC")
+          .first
+          .created_at
     }
-  end
-
-  def self.most_items_sold(quantity)
-    joins(:invoice_items)
-    .joins(invoices: :transactions)
-    .merge(Transaction.successful)
-    .group("items.id")
-    .order("sum(invoice_items.quantity)")
-    .first(quantity)
   end
 
 end
