@@ -12,6 +12,7 @@ Rails.application.routes.draw do
         get ':id/favorite_customer', to: 'favorite#show'
         get 'most_items', to: 'all_items#index'
         get 'most_revenue', to: 'revenue#index'
+        get 'revenue', to: 'total_revenue#show'
       end
 
       namespace :items do

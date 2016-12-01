@@ -50,4 +50,10 @@ RSpec.describe "all merchants business intelligence endpoints" do
       expect(data.first["id"]).to eq(merchant2.id)
     end
   end
+
+  context "GET /api/v1/merchants/revenue?date=x" do
+    it "returns the total revenue for date x across all merchants" do
+      
+    end
+  end
 end

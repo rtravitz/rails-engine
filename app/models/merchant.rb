@@ -66,4 +66,8 @@ class Merchant < ApplicationRecord
       .limit(quantity)
   end
 
+  def self.total_revenue(date)
+
+  end
+
 end
