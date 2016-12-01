@@ -8,24 +8,18 @@ class Merchant < ApplicationRecord
   validates :name, presence: true
 
   def total_revenue
-    {
-      "revenue" =>
-          to_float(invoices
-          .joins(:transactions, :invoice_items)
-          .merge(Transaction.successful)
-          .sum("invoice_items.quantity * invoice_items.unit_price"))
-    }
+    invoices
+    .joins(:transactions, :invoice_items)
+    .merge(Transaction.successful)
+    .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 
   def total_revenue_by_date(date)
-    {
-      "revenue" =>
-          to_float(invoices
-          .where(created_at: date)
-          .joins(:transactions, :invoice_items)
-          .merge(Transaction.successful)
-          .sum("invoice_items.quantity * invoice_items.unit_price"))
-    }
+    invoices
+    .where(created_at: date)
+    .joins(:transactions, :invoice_items)
+    .merge(Transaction.successful)
+    .sum("invoice_items.quantity * invoice_items.unit_price")
   end
 
   def self.most_items_sold(quantity)
@@ -35,10 +29,6 @@ class Merchant < ApplicationRecord
     .order("item_count DESC")
     .group("merchants.id")
     .limit(quantity)
-  end
-
-  def to_float(input)
-     "#{'%.2f' % (input/100.0)}"
   end
 
   def pending_invoices
