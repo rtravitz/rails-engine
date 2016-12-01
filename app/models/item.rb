@@ -16,9 +16,9 @@ class Item < ApplicationRecord
   end
 
   def self.most_items_sold(quantity)
-    joins(:invoices)
-    .merge(Invoice.successful_transaction)
-    .group(:id)
+    joins([invoices: :transactions])
+    .merge(Transaction.successful)
+    .group("items.id")
     .order("sum(invoice_items.quantity) DESC")
     .first(quantity)
   end
