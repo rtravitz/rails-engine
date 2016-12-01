@@ -6,4 +6,5 @@ class Invoice < ApplicationRecord
   belongs_to :merchant
 
   validates :status, presence: true
+
 end
