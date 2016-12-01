@@ -1,7 +1,7 @@
 class Api::V1::Items::SearchController < ApplicationController
   def index
     if params.has_key?("unit_price")
-      unit_price = (params["unit_price"].to_f * 100).to_i
+      unit_price = (params["unit_price"].to_f * 100.00).round
       render json: Item.where(unit_price: unit_price)
     else
       render json: Item.where(item_params)
@@ -10,10 +10,10 @@ class Api::V1::Items::SearchController < ApplicationController
 
   def show
     if params.has_key?("unit_price")
-      unit_price = (params["unit_price"].to_f * 100).to_i
+      unit_price = (params["unit_price"].to_f * 100.00).round
       render json: Item.find_by(unit_price: unit_price)
     else
-      render json: Item.find_by(item_params)
+      render json: Item.where(item_params).sort.first
     end
   end
 
