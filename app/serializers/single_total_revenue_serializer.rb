@@ -2,6 +2,6 @@ class SingleTotalRevenueSerializer < ActiveModel::Serializer
   attributes :revenue
 
   def revenue
-    object
+    (object.to_f / 100.00).to_s
   end
 end

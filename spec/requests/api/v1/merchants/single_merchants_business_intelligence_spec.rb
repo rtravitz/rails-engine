@@ -9,7 +9,7 @@ RSpec.describe "single merchants business intelligence endpoints" do
       invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 10, unit_price: 50000)
       transaction = create(:transaction, invoice: invoice, result: "success")
 
-      revenue = '%.2f' % ((invoice_item_1.quantity * invoice_item_1.unit_price)/ 100.00)
+      revenue = ((invoice_item_1.quantity * invoice_item_1.unit_price)/ 100.00).to_s
 
       get "/api/v1/merchants/#{merchant.id}/revenue"
 
@@ -28,11 +28,11 @@ RSpec.describe "single merchants business intelligence endpoints" do
       invoice_item_3 = create(:invoice_item, item: item, invoice: invoice, quantity: 2, unit_price: 5000)
       transaction = create(:transaction, invoice: invoice, result: "success")
 
-      revenue_1 = (invoice_item_1.quantity * invoice_item_1.unit_price) / 100.00
-      revenue_2 = (invoice_item_2.quantity * invoice_item_2.unit_price) / 100.00
-      revenue_3 = (invoice_item_3.quantity * invoice_item_3.unit_price) / 100.00
+      revenue_1 = ((invoice_item_1.quantity * invoice_item_1.unit_price) / 100.00)
+      revenue_2 = ((invoice_item_2.quantity * invoice_item_2.unit_price) / 100.00)
+      revenue_3 = ((invoice_item_3.quantity * invoice_item_3.unit_price) / 100.00)
 
-      revenue = '%.2f' % (revenue_1 + revenue_2 + revenue_3)
+      revenue = (revenue_1 + revenue_2 + revenue_3).to_s
 
       get "/api/v1/merchants/#{merchant.id}/revenue"
 
@@ -52,10 +52,10 @@ RSpec.describe "single merchants business intelligence endpoints" do
       transaction = create(:transaction, invoice: invoice, result: "success")
       transaction = create(:transaction, invoice: invoice_2, result: "success")
 
-      revenue_1 = (invoice_item_1.quantity * invoice_item_1.unit_price) / 100.00
-      revenue_2 = (invoice_item_2.quantity * invoice_item_2.unit_price) / 100.00
+      revenue_1 = ((invoice_item_1.quantity * invoice_item_1.unit_price) / 100.00)
+      revenue_2 = ((invoice_item_2.quantity * invoice_item_2.unit_price) / 100.00)
 
-      revenue = '%.2f' % (revenue_1 + revenue_2)
+      revenue = (revenue_1 + revenue_2).to_s
 
       get "/api/v1/merchants/#{merchant.id}/revenue"
 
@@ -75,7 +75,7 @@ RSpec.describe "single merchants business intelligence endpoints" do
       transaction = create(:transaction, invoice: invoice, result: "success")
       transaction = create(:transaction, invoice: invoice_2, result: "failure")
 
-      revenue = '%.2f' % ((invoice_item_1.quantity * invoice_item_1.unit_price)/ 100.00)
+      revenue = ((invoice_item_1.quantity * invoice_item_1.unit_price)/ 100.00).to_s
 
       get "/api/v1/merchants/#{merchant.id}/revenue"
 
@@ -126,7 +126,7 @@ RSpec.describe "single merchants business intelligence endpoints" do
       get "/api/v1/merchants/#{merchant1.id}/favorite_customer"
 
       data = JSON.parse(response.body)
-      
+
       expect(response).to be_success
       expect(data["id"]).to eq(customer1.id)
     end
