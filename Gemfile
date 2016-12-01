@@ -26,6 +26,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'rspec-rails'
   gem 'rb-readline'
+  gem 'simplecov'
 end
 
 group :development do
