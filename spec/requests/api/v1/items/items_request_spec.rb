@@ -64,6 +64,18 @@ RSpec.describe "items endpoints" do
       expect(response).to be_success
       expect(data["id"]).to eq(item.id)
     end
+
+    it "returns an item by date" do
+      item_1 = create(:item, created_at: "2012-03-04 10:54:55")
+      item_2 = create(:item, created_at: "2012-03-08 10:54:55")
+
+      get "/api/v1/items/find?created_at=2012-03-04 10:54:55"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["id"]).to eq(item_1.id)
+    end
   end
 
   context "GET /api/v1/items/find_all" do
