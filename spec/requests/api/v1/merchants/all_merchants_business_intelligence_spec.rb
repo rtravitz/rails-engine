@@ -50,4 +50,5 @@ RSpec.describe "all merchants business intelligence endpoints" do
       expect(data.first["id"]).to eq(merchant2.id)
     end
   end
+
 end

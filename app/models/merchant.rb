@@ -66,4 +66,13 @@ class Merchant < ApplicationRecord
       .limit(quantity)
   end
 
+  def self.total_revenue(date)
+    result = joins(invoices: [:invoice_items, :transactions])
+    .merge(Transaction.successful)
+    .where(invoices: {created_at: date})
+    .sum("invoice_items.quantity * invoice_items.unit_price")
+    result = (result.to_f / 100.00).to_s
+    {"total_revenue" => result }
+  end
+
 end
