@@ -13,5 +13,17 @@ class Item < ApplicationRecord
           .group(:id)
           .order("total_price DESC")
           .limit(quantity)
+
   end
+
+  def best_day
+    {
+      "best_day": invoices
+                  .joins(:invoice_items)
+                  .order("invoice_items.quantity DESC, invoices.created_at DESC")
+                  .first
+                  .created_at
+    }
+  end
+
 end

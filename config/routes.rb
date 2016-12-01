@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         get ':id/invoice_items', to: 'invoice_items#index'
         get ':id/merchant', to: 'merchants#show'
         get 'most_revenue', to: 'revenue#show'
+        get ':id/best_day', to: 'best_day#show'
       end
 
       namespace :invoice_items do
@@ -36,6 +37,7 @@ Rails.application.routes.draw do
         get 'random', to: 'random#show'
         get ':id/invoices', to: 'invoices#index'
         get ':id/transactions', to: 'transactions#index'
+        get ':id/favorite_merchant', to: 'merchants#show'
       end
 
       namespace :invoices do
