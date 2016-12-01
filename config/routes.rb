@@ -11,6 +11,7 @@ Rails.application.routes.draw do
         get ':id/customers_with_pending_invoices', to: 'pending#index'
         get ':id/favorite_customer', to: 'favorite#show'
         get 'most_items', to: 'all_items#index'
+        get 'most_revenue', to: 'revenue#index'
       end
 
       namespace :items do
@@ -20,6 +21,7 @@ Rails.application.routes.draw do
         get 'most_items', to: 'all_items#index'
         get ':id/invoice_items', to: 'invoice_items#index'
         get ':id/merchant', to: 'merchants#show'
+        get 'most_revenue', to: 'revenue#show'
         get ':id/best_day', to: 'best_day#show'
       end
 
