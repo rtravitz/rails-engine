@@ -51,4 +51,24 @@ RSpec.describe "all merchants business intelligence endpoints" do
     end
   end
 
+  context "GET /api/v1/merchants/revenue?date=x" do
+    it "returns the total revenue for date x across all merchants" do
+      date = "2012-03-16 11:55:05"
+      merchant1, merchant2 = create_list(:merchant, 2)
+      invoice = create(:invoice, merchant: merchant2, created_at: date)
+      invoice_2 = create(:invoice, merchant: merchant1, created_at: date)
+      invoice_item_1 = create(:invoice_item, invoice: invoice, quantity: 10, unit_price: 200)
+      invoice_item_2 = create(:invoice_item, invoice: invoice_2, quantity: 5, unit_price: 100)
+      create(:transaction, invoice: invoice, result: "success")
+      create(:transaction, invoice: invoice_2, result: "success")
+
+      get "/api/v1/merchants/revenue?date=#{date}"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["total_revenue"]).to eq("25.0")
+    end
+  end
+
 end
