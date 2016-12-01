@@ -5,6 +5,17 @@ class Item < ApplicationRecord
 
   validates :name, :description, :unit_price, presence: true
 
+  def self.most_revenue(quantity = 5)
+    Item.select("items.*, sum(invoice_items.quantity) * items.unit_price as total_price")
+          .joins(:invoice_items)
+          .joins(invoices: :transactions)
+          .merge(Transaction.successful)
+          .group(:id)
+          .order("total_price DESC")
+          .limit(quantity)
+
+  end
+
   def best_day
     {
       "best_day": invoices
@@ -14,4 +25,5 @@ class Item < ApplicationRecord
                   .created_at
     }
   end
+
 end

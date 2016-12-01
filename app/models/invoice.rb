@@ -6,4 +6,9 @@ class Invoice < ApplicationRecord
   belongs_to :merchant
 
   validates :status, presence: true
+
+  scope :successful_transaction, -> { 
+    joins(:transactions)
+    .where(transactions: {result: 'success'}) 
+  }
 end
