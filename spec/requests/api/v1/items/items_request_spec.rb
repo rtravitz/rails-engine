@@ -56,13 +56,25 @@ RSpec.describe "items endpoints" do
       create_list(:item, 3)
       item = Item.first
       item.update(unit_price: "49121")
-      
+
       get '/api/v1/items/find?unit_price=491.21'
 
       data = JSON.parse(response.body)
 
       expect(response).to be_success
       expect(data["id"]).to eq(item.id)
+    end
+
+    it "returns an item by date" do
+      item_1 = create(:item, created_at: "2012-03-04 10:54:55")
+      item_2 = create(:item, created_at: "2012-03-08 10:54:55")
+
+      get "/api/v1/items/find?created_at=2012-03-04 10:54:55"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data["id"]).to eq(item_1.id)
     end
   end
 
@@ -94,6 +106,21 @@ RSpec.describe "items endpoints" do
       expect(data.count).to eq(2)
       data.each do |datum|
         expect(datum["name"]).to eq(item1.name)
+      end
+    end
+
+    it "returns all items by date" do
+      items = create_list(:item, 3, created_at: "2012-03-07 10:54:55")
+      item_ids = items.map {|item| item.id}
+      get "/api/v1/items/find_all?created_at=2012-03-07 10:54:55"
+
+      data = JSON.parse(response.body)
+
+      expect(response).to be_success
+      expect(data.count).to eq(3)
+
+      data.each do |datum|
+        expect(item_ids).to include(datum["id"])
       end
     end
   end
