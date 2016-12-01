@@ -24,15 +24,12 @@ class Item < ApplicationRecord
   end
 
   def best_day
-    {
-      "best_day" =>
-          invoices
-          .joins(:invoice_items)
-          .group("invoices.id")
-          .order("sum(invoice_items.quantity) DESC, invoices.created_at DESC")
-          .first
-          .created_at
-    }
+    invoices
+    .joins(:invoice_items)
+    .group("invoices.id")
+    .order("sum(invoice_items.quantity) DESC, invoices.created_at DESC")
+    .first
+    .created_at
   end
 
 end
