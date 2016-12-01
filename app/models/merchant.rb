@@ -9,20 +9,22 @@ class Merchant < ApplicationRecord
 
   def total_revenue
     {
-      "revenue": to_float(invoices
-                          .joins(:transactions, :invoice_items)
-                          .merge(Transaction.successful)
-                          .sum("invoice_items.quantity * invoice_items.unit_price"))
+      "revenue" =>
+          to_float(invoices
+          .joins(:transactions, :invoice_items)
+          .merge(Transaction.successful)
+          .sum("invoice_items.quantity * invoice_items.unit_price"))
     }
   end
 
   def total_revenue_by_date(date)
     {
-      "revenue": to_float(invoices
-                          .where(created_at: date)
-                          .joins(:transactions, :invoice_items)
-                          .merge(Transaction.successful)
-                          .sum("invoice_items.quantity * invoice_items.unit_price"))
+      "revenue" =>
+          to_float(invoices
+          .where(created_at: date)
+          .joins(:transactions, :invoice_items)
+          .merge(Transaction.successful)
+          .sum("invoice_items.quantity * invoice_items.unit_price"))
     }
   end
 
