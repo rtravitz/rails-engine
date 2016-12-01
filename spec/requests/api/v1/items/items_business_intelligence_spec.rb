@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "items business intelligence endpoints" do
-  context "GET /api/v1/items/:id/most_revenue?quantity=x" do
+  context "GET /api/v1/items/most_revenue?quantity=x" do
     it "returns the top x items ranked by total revenue generated" do
       item1, item2 = create_list(:item, 2, unit_price: 1)
       invoice = create(:invoice)
