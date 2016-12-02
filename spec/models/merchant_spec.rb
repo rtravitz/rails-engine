@@ -62,5 +62,40 @@ describe "merchant" do
         expect(response.first.id).to eq(customer2.id)
       end
     end
+
+    context "self.most_revenue" do
+      it "returns the top x merchants ranked by total revenue" do
+        merchant1, merchant2 = create_list(:merchant, 2)
+        item = create(:item)
+        invoice = create(:invoice, merchant: merchant2)
+        invoice_2 = create(:invoice, merchant: merchant1)
+        invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 10, unit_price: 50000)
+        invoice_item_2 = create(:invoice_item, item: item, invoice: invoice_2, quantity: 5, unit_price: 10000)
+        transaction = create(:transaction, invoice: invoice, result: "success")
+        transaction = create(:transaction, invoice: invoice_2, result: "success")
+
+        response = Merchant.most_revenue(2)
+
+        expect(response.length).to eq(2)
+        expect(response.first.id).to eq(merchant2.id)
+      end
+    end
+
+    context "self.total_revenue" do
+      it "returns the total revenue for date x across all merchants" do
+        date = "2012-03-16 11:55:05"
+        merchant1, merchant2 = create_list(:merchant, 2)
+        invoice = create(:invoice, merchant: merchant2, created_at: date)
+        invoice_2 = create(:invoice, merchant: merchant1, created_at: date)
+        invoice_item_1 = create(:invoice_item, invoice: invoice, quantity: 10, unit_price: 200)
+        invoice_item_2 = create(:invoice_item, invoice: invoice_2, quantity: 5, unit_price: 100)
+        create(:transaction, invoice: invoice, result: "success")
+        create(:transaction, invoice: invoice_2, result: "success")
+
+        response = Merchant.total_revenue(date)
+
+        expect(response.to_f).to eq(2500.0)
+      end
+    end
   end
 end
