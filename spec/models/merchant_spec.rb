@@ -177,5 +177,29 @@ describe "merchant" do
         expect(Merchant.most_items_sold(1)).to eq([])
       end
     end
+
+    context "pending_invoices" do
+      it "returns an Array" do
+        customer = create(:customer)
+        merchant_1 = create(:merchant)
+        item = create(:item)
+        invoice = create(:invoice, merchant: merchant_1, customer: customer)
+        invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 20, unit_price: 50000)
+        transaction = create(:transaction, invoice: invoice, result: "success")
+
+        expect(merchant_1.pending_invoices.class).to eq(Array)
+      end
+
+      it "returns when containing failed transactions" do
+        customer = create(:customer)
+        merchant_1 = create(:merchant)
+        item = create(:item)
+        invoice = create(:invoice, merchant: merchant_1, customer: customer)
+        invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 20, unit_price: 50000)
+        transaction = create(:transaction, invoice: invoice, result: "failed")
+
+        expect(merchant_1.pending_invoices.count).to eq(1)
+      end
+    end
   end
 end
