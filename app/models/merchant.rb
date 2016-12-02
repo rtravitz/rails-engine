@@ -32,10 +32,27 @@ class Merchant < ApplicationRecord
   end
 
   def pending_invoices
-    failed = invoices.joins(:transactions).where.not("transactions.result = ?", "success").pluck(:id)
-    success = invoices.joins(:transactions).where.not("transactions.result = ?", "failed").pluck(:id)
-    left = (failed - success).uniq
-    customers.joins(:invoices).where(invoices: {id: left}).distinct
+    Customer.find_by_sql(
+    "select customers.*
+    from customers
+    join invoices
+    on customers.id = invoices.customer_id
+    where invoices.id in (
+      select invoices.id
+      from invoices
+      join transactions
+      on invoices.id = transactions.invoice_id
+      where transactions.result <> 'success'
+      and invoices.merchant_id = #{self.id}
+      except
+      select invoices.id
+      from invoices
+      join transactions
+      on invoices.id = transactions.invoice_id
+      where transactions.result = 'success'
+      and invoices.merchant_id = #{self.id}
+    )
+    and invoices.merchant_id = #{self.id};")
   end
 
   def favorite_customer

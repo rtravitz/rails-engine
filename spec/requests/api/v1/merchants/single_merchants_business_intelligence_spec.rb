@@ -102,11 +102,9 @@ RSpec.describe "single merchants business intelligence endpoints" do
       get "/api/v1/merchants/#{merchant1.id}/customers_with_pending_invoices"
 
       data = JSON.parse(response.body)
-      ids = data.map {|datum| datum["id"]}
-
       expect(response).to be_success
       expect(data.count).to eq(1)
-      expect(ids).to include(customer2.id)
+      expect(data.first["id"]).to eq(customer2.id)
     end
   end
 
