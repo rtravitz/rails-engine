@@ -36,11 +36,12 @@ describe "transaction" do
     end
   end
 
-  describe "relationships" do
+  context "relationships" do
     it "belongs to a invoice" do
       transaction = Transaction.new(credit_card_number: 11111111, result: "success")
 
       expect(transaction).to respond_to(:invoice)
     end
   end
+
 end
