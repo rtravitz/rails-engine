@@ -36,7 +36,7 @@ describe "merchant" do
         create(:transaction, invoice: invoice2, result: "success")
         create(:transaction, invoice: invoice3, result: "success")
         create_list(:transaction, 3, invoice: invoice4, result: "failure")
-        
+
         response = merchant1.favorite_customer
 
         expect(response.id).to eq(customer1.id)
@@ -55,7 +55,7 @@ describe "merchant" do
         transaction2 = create(:transaction, result: "failed", invoice: invoice1)
         transaction3 = create(:transaction, result: "failed", invoice: invoice2)
         transaction4 = create(:transaction, result: "success", invoice: invoice3)
-        
+
         response = merchant1.pending_invoices
 
         expect(response.length).to eq(1)
@@ -95,6 +95,86 @@ describe "merchant" do
         response = Merchant.total_revenue(date)
 
         expect(response.to_f).to eq(2500.0)
+      end
+    end
+
+    context "total_revenue" do
+      it "returns a Big Decimal" do
+        merchant = create(:merchant)
+        item = create(:item)
+        invoice = create(:invoice, merchant: merchant)
+        invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 10, unit_price: 50000)
+        transaction = create(:transaction, invoice: invoice, result: "success")
+
+        expect(merchant.total_revenue.class).to eq(BigDecimal)
+      end
+
+      it "returns only for successful transactions" do
+        merchant = create(:merchant)
+        item = create(:item)
+        invoice = create(:invoice, merchant: merchant)
+        invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 10, unit_price: 50000)
+        transaction = create(:transaction, invoice: invoice, result: "failed")
+
+        expect(merchant.total_revenue.to_f).to eq(0.0)
+      end
+    end
+
+    context "total_revenue_by_date" do
+      it "returns a Big Decimal" do
+        date = "2012-03-16 11:55:05"
+        merchant = create(:merchant)
+        item = create(:item)
+        invoice = create(:invoice, merchant: merchant, created_at: date)
+        invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 10, unit_price: 50000)
+        transaction = create(:transaction, invoice: invoice, result: "success")
+
+        expect(merchant.total_revenue_by_date(date).class).to eq(BigDecimal)
+      end
+
+      it "returns only for successful transactions" do
+        date = "2012-03-16 11:55:05"
+        merchant = create(:merchant)
+        item = create(:item)
+        invoice = create(:invoice, merchant: merchant, created_at: date)
+        invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 10, unit_price: 50000)
+        transaction = create(:transaction, invoice: invoice, result: "failed")
+
+        expect(merchant.total_revenue_by_date(date).to_f).to eq(0.0)
+      end
+
+      it "returns only for valid dates" do
+        date = "2012-03-16 11:55:05"
+        fake_date = "1900-01-11 11:55:05"
+        merchant = create(:merchant)
+        item = create(:item)
+        invoice = create(:invoice, merchant: merchant, created_at: date)
+        invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 10, unit_price: 50000)
+        transaction = create(:transaction, invoice: invoice, result: "success")
+
+        expect(merchant.total_revenue_by_date(fake_date).to_f).to eq(0.0)
+      end
+    end
+
+    context "most_items_sold" do
+      it "returns a Merchant collection" do
+        merchant_1 = create(:merchant)
+        item = create(:item)
+        invoice = create(:invoice, merchant: merchant_1)
+        invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 20, unit_price: 50000)
+        transaction = create(:transaction, invoice: invoice, result: "success")
+
+        expect(Merchant.most_items_sold(1).class).to eq(Merchant::ActiveRecord_Relation)
+      end
+
+      it "returns only for success transactions" do
+        merchant_1 = create(:merchant)
+        item = create(:item)
+        invoice = create(:invoice, merchant: merchant_1)
+        invoice_item_1 = create(:invoice_item, item: item, invoice: invoice, quantity: 20, unit_price: 50000)
+        transaction = create(:transaction, invoice: invoice, result: "failed")
+
+        expect(Merchant.most_items_sold(1)).to eq([])
       end
     end
   end
