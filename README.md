@@ -6,7 +6,7 @@ This project uses Rails and ActiveRecord to build a JSON API with the SalesEngin
 * Configuration - run the following commands in the order listed:
   * ```rake db:create```
   * ```rake db:migrate```
-  * ```rake load:all```  
+  * ```rake load_data:all```  
 
 * How to run the test suite
   * ```rspec``` from the root directory
