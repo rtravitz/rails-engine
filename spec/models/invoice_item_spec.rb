@@ -63,10 +63,10 @@ describe "invoice item" do
       it "returns the top x item instances ranked by total number sold"  do
         item_1, item_2, item_3 = create_list(:item, 3)
         invoice = create(:invoice)
-        transaction_1, transaction_2, transaction_3 = create_list(:transaction, 3, invoice: invoice, result: 'success')
-        invoice_item_1 = create(:invoice_item, item: item_1, invoice: invoice, quantity: 200)
-        invoice_item_1 = create(:invoice_item, item: item_2, invoice: invoice, quantity: 300)
-        invoice_item_1 = create(:invoice_item, item: item_3, invoice: invoice, quantity: 400)
+        create_list(:transaction, 3, invoice: invoice, result: 'success')
+        create(:invoice_item, item: item_1, invoice: invoice, quantity: 200)
+        create(:invoice_item, item: item_2, invoice: invoice, quantity: 300)
+        create(:invoice_item, item: item_3, invoice: invoice, quantity: 400)
 
         response = Item.most_items_sold(2)
 
